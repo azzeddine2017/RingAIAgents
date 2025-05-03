@@ -1,0 +1,388 @@
+/**
+ * RingAI Agents - API Keys Management Styles
+ * Author: Azzeddine Remmal
+ * Date: 2025
+ */
+
+/* API Keys Table */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.api-key-mask {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-lighter);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+}
+
+.api-key-mask:hover {
+    background-color: var(--bg-card);
+    box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.api-key-mask span {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.api-key-mask .toggle-key {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.api-key-mask .toggle-key:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+    transform: translateY(-2px);
+}
+
+.api-key-mask span.visible {
+    font-weight: bold;
+    color: var(--success);
+    text-shadow: 0 0 5px rgba(16, 185, 129, 0.2);
+}
+
+/* Modal Styles */
+.modal-dialog {
+    max-width: 550px;
+}
+
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--text-white);
+    border-bottom: none;
+    padding: 20px 25px;
+}
+
+.modal-header .close {
+    color: var(--text-white);
+    opacity: 0.8;
+    text-shadow: none;
+    transition: all 0.3s ease;
+}
+
+.modal-header .close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.modal-body label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.modal-body .form-control {
+    border-radius: 8px;
+    border: 2px solid #ecf0f1;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.modal-body .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-light);
+    padding: 20px 25px;
+    background-color: var(--bg-main);
+}
+
+.modal-footer .btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+}
+
+.modal-footer .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.modal-footer .btn-secondary {
+    background-color: var(--light);
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: var(--border-medium);
+    border-color: var(--border-medium);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+/* Status Badges */
+.badge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 30px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.badge-success {
+    background-color: var(--success);
+    color: var(--text-white);
+}
+
+.badge-danger {
+    background-color: var(--danger);
+    color: var(--text-white);
+}
+
+.badge-warning {
+    background-color: var(--warning);
+    color: var(--text-white);
+}
+
+.badge-info {
+    background-color: var(--info);
+    color: var(--text-white);
+}
+
+/* Status indicators */
+.status-active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-expired {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.status-unknown {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+/* Info Section */
+.info-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 30px;
+}
+
+.info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px var(--shadow-color-dark);
+}
+
+.info-card .card-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--text-white);
+    font-weight: 700;
+    padding: 20px 25px;
+    border-bottom: none;
+}
+
+.info-card .card-body {
+    padding: 25px;
+}
+
+.card-body ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    list-style-type: none;
+}
+
+.card-body ul li {
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.card-body ul li:before {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--success);
+}
+
+.card-body ul li a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-bottom: 1px dashed var(--primary);
+    padding-bottom: 2px;
+}
+
+.card-body ul li a:hover {
+    color: var(--primary-dark);
+    border-bottom: 1px solid var(--primary-dark);
+}
+
+.provider-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .modal-dialog {
+        max-width: 500px;
+    }
+
+    .api-key-mask span {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .btn-group .btn {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .api-key-mask {
+        padding: 6px 10px;
+    }
+
+    .api-key-mask span {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+
+    .api-key-mask .toggle-key {
+        padding: 3px 8px;
+        margin-left: 8px;
+        font-size: 0.8rem;
+    }
+
+    .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+
+    .modal-header {
+        padding: 15px 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 15px 20px;
+    }
+
+    .badge {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+    }
+
+    .info-card .card-header {
+        padding: 15px 20px;
+    }
+
+    .info-card .card-body {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .api-key-mask span {
+        max-width: 120px;
+        font-size: 0.8rem;
+    }
+
+    .api-key-mask .toggle-key {
+        padding: 2px 6px;
+        font-size: 0.75rem;
+    }
+
+    .btn-group .btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+
+    .modal-title {
+        font-size: 1.2rem;
+    }
+
+    .modal-body .form-control {
+        padding: 10px;
+    }
+
+    .modal-footer .btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+
+    .badge {
+        padding: 4px 6px;
+        font-size: 0.7rem;
+    }
+}

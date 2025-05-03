@@ -1,0 +1,15 @@
+{
+  "code-runner.executorMap": {
+    "ring": "cd $dir && ring $fileName",
+    "javascript": "cd $dir && node $fileName",
+    "typescript": "cd $dir && ts-node $fileName",
+    "python": "cd $dir && python $fileName"
+  },
+  "code-runner.executorMapByFileExtension": {
+    ".ring": "cd $dir && ring $fileName"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.clearPreviousOutput": true,
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

@@ -1,0 +1,14 @@
+
+{
+  "name": "Ahmed",
+  "age": 25,
+  "skills": [
+      "Ring",
+      "Python",
+      "JavaScript"
+  ],
+  "address": {
+      "city": "Cairo",
+      "country": "Egypt"
+  }
+}

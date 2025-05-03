@@ -1,0 +1,693 @@
+/*
+ * RingAI Agents - Dashboard Styles
+ * Author: Azzeddine Remmal
+ * Date: 2025
+ */
+
+/* Progress Bar Styles - Modern & Animated */
+.progress {
+    height: 0.75rem;
+    border-radius: var(--radius-full);
+    background-color: var(--light);
+    box-shadow: inset 0 1px 3px var(--shadow-color);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-thin {
+    height: 0.375rem;
+}
+
+.progress-bar {
+    line-height: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%);
+    width: 50%;
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent);
+    background-size: 1rem 1rem;
+    animation: progress-animation 2s linear infinite;
+    z-index: 1;
+}
+
+@keyframes progress-animation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 1rem 0;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+/* Progress Bar Colors */
+.progress-bar-primary {
+    background-color: var(--primary);
+}
+
+.progress-bar-secondary {
+    background-color: var(--secondary);
+}
+
+.progress-bar-success {
+    background-color: var(--success);
+}
+
+.progress-bar-danger {
+    background-color: var(--danger);
+}
+
+.progress-bar-warning {
+    background-color: var(--warning);
+}
+
+.progress-bar-info {
+    background-color: var(--info);
+}
+
+/* Dashboard Card Styles - Modern & Glassmorphic */
+.dashboard-card {
+    height: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Add subtle border for better visibility */
+    box-shadow: 0 10px 25px var(--shadow-color);
+    position: relative;
+    background-color: var(--bg-card);
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px var(--shadow-color-dark);
+}
+
+.dashboard-card:hover::before {
+    opacity: 1;
+}
+
+.dashboard-card .card-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    position: relative;
+    background-color: var(--primary); /* Light green background */
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--text-primary); /* Explicitly set text color */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Add subtle text shadow for better contrast */
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.dashboard-card .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-light), transparent);
+}
+
+.dashboard-card .card-body {
+    padding: 1.5rem;
+    background-color: var(--bg-card); /* Explicit background color */
+}
+
+.dashboard-card .list-group-item {
+    border: none;
+    padding: 0.75rem 0.5rem; /* Added horizontal padding */
+    border-bottom: 1px solid var(--border-light);
+    background-color: rgba(16, 185, 129, 0.05); /* Light green background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    color: var(--text-primary); /* Explicitly set text color */
+    font-weight: 600; /* Increased for better visibility */
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-card .list-group-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(16, 185, 129, 0.2); /* Darker green background on hover */
+    padding-left: 0.75rem;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Increased shadow for better visibility */
+    border-left: 3px solid var(--primary); /* Add left border for emphasis */
+}
+
+.dashboard-card .list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Glassmorphic Card */
+.dashboard-card-glass {
+    background: rgba(226, 232, 240, 0.8); /* Increased opacity for better visibility */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.15); /* Darker border for better visibility */
+    color: var(--text-primary); /* Explicitly set text color */
+}
+
+.dashboard-card-glass .card-header {
+    background: rgba(203, 213, 225, 0.5); /* Increased opacity for better visibility */
+    color: var(--text-primary); /* Explicitly set text color */
+    font-weight: 700; /* Added for better visibility */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add subtle border for better visibility */
+}
+
+/* Neumorphic Card */
+.dashboard-card-neumorphic {
+    background-color: var(--bg-main);
+    box-shadow:
+        8px 8px 16px var(--shadow-color),
+        -8px -8px 16px var(--primary-lighter);
+}
+
+.dashboard-card-neumorphic:hover {
+    box-shadow:
+        12px 12px 24px var(--shadow-color),
+        -12px -12px 24px var(--primary-lighter);
+}
+
+.dashboard-card-neumorphic .card-header {
+    background-color: var(--bg-main);
+}
+
+.dashboard-card-neumorphic .list-group-item {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Dashboard Navigation Links - Modern & Interactive */
+.dashboard-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+.dashboard-link {
+    flex: 0 0 calc(20% - 1.5rem);
+    max-width: calc(20% - 1.5rem);
+}
+
+.dashboard-link .btn {
+    height: 8rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Add subtle border for better visibility */
+    font-size: 0.9375rem;
+    font-weight: 700; /* Increased from 600 for better visibility */
+    box-shadow: 0 8px 20px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: var(--text-white);
+    letter-spacing: 0.025em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Add text shadow for better contrast */
+}
+
+.dashboard-link .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: -1;
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+}
+
+.dashboard-link .btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 70%);
+    transform: translateX(-100%);
+    transition: all 0.7s ease;
+}
+
+.dashboard-link .btn i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-link .btn span {
+    transition: all 0.5s ease;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    opacity: 1; /* Changed from 0.9 for better visibility */
+    font-weight: 700; /* Added for better visibility */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Add text shadow for better contrast */
+}
+
+.dashboard-link .btn:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px var(--shadow-color-dark);
+}
+
+.dashboard-link .btn:hover::before {
+    opacity: 1;
+}
+
+.dashboard-link .btn:hover::after {
+    transform: translateX(100%);
+}
+
+.dashboard-link .btn:hover i {
+    transform: translateY(-5px) scale(1.2);
+}
+
+.dashboard-link .btn:hover span {
+    font-weight: 700;
+    opacity: 1;
+}
+
+.dashboard-link .btn:active {
+    transform: translateY(-5px) scale(0.98);
+}
+
+/* Dashboard Button Styles */
+.dashboard-link-primary .btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.dashboard-link-secondary .btn {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+}
+
+.dashboard-link-info .btn {
+    background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+}
+
+.dashboard-link-warning .btn {
+    background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+}
+
+.dashboard-link-danger .btn {
+    background: linear-gradient(135deg, var(--danger) 0%, #b91c1c 100%);
+}
+
+.dashboard-link-purple .btn {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+}
+
+.dashboard-link-pink .btn {
+    background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+}
+
+.dashboard-link-indigo .btn {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+}
+
+/* Glassmorphic Dashboard Links */
+.dashboard-link-glass .btn {
+    background: rgba(226, 232, 240, 0.8); /* Increased opacity for better visibility */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Darker border for better visibility */
+    color: var(--text-primary);
+    font-weight: 700; /* Added for better visibility */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5); /* Add text shadow for better contrast */
+}
+
+.dashboard-link-glass .btn i {
+    color: var(--primary);
+}
+
+/* Neumorphic Dashboard Links */
+.dashboard-link-neumorphic .btn {
+    background-color: var(--bg-main);
+    box-shadow:
+        8px 8px 16px var(--shadow-color),
+        -8px -8px 16px var(--primary-lighter);
+    color: var(--text-primary);
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Add subtle border for better visibility */
+    font-weight: 700; /* Added for better visibility */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); /* Add text shadow for better contrast */
+}
+
+.dashboard-link-neumorphic .btn:hover {
+    box-shadow:
+        12px 12px 24px var(--shadow-color),
+        -12px -12px 24px var(--primary-lighter);
+}
+
+.dashboard-link-neumorphic .btn i {
+    color: var(--primary);
+}
+
+/* Bordered Dashboard Links */
+.dashboard-link-bordered .btn {
+    background-color: var(--bg-card);
+    border: 2px solid var(--primary);
+    color: var(--text-primary);
+    font-weight: 700; /* Make text bolder for better visibility */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); /* Add subtle text shadow for better contrast */
+}
+
+.dashboard-link-bordered .btn i {
+    color: var(--primary);
+}
+
+.dashboard-link-bordered .btn:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+}
+
+.dashboard-link-bordered .btn:hover i {
+    color: var(--text-white);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .dashboard-link {
+        flex: 0 0 calc(25% - 1.5rem);
+        max-width: calc(25% - 1.5rem);
+    }
+
+    .dashboard-link .btn {
+        height: 9rem;
+    }
+
+    .dashboard-link .btn i {
+        font-size: 2.25rem;
+    }
+
+    .dashboard-card .card-header {
+        padding: 1rem;
+    }
+
+    .dashboard-card .card-body {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .dashboard-link {
+        flex: 0 0 calc(33.33% - 1.5rem);
+        max-width: calc(33.33% - 1.5rem);
+    }
+
+    .dashboard-link .btn {
+        height: 8rem;
+        font-size: 0.9rem;
+    }
+
+    .dashboard-link .btn i {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .dashboard-link .btn span {
+        font-size: 0.8125rem;
+    }
+
+    .dashboard-card .card-header {
+        padding: 1rem;
+    }
+
+    .dashboard-card .card-body {
+        padding: 1.25rem;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-8px) scale(1.01);
+    }
+
+    .progress {
+        height: 0.625rem;
+    }
+
+    .progress-thin {
+        height: 0.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-links {
+        gap: 1rem;
+    }
+
+    .dashboard-link {
+        flex: 0 0 calc(50% - 1rem);
+        max-width: calc(50% - 1rem);
+    }
+
+    .dashboard-link .btn {
+        height: 7rem;
+    }
+
+    .dashboard-link .btn i {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .dashboard-link .btn span {
+        font-size: 0.75rem;
+    }
+
+    .dashboard-link .btn:hover {
+        transform: translateY(-5px) scale(1.03);
+    }
+
+    .dashboard-card {
+        margin-bottom: 1.25rem;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px) scale(1);
+    }
+
+    .dashboard-card .list-group-item {
+        padding: 0.625rem 0;
+    }
+
+    .progress {
+        height: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .progress-bar {
+        font-size: 0.6875rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-links {
+        gap: 0.75rem;
+    }
+
+    .dashboard-link {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .dashboard-link .btn {
+        height: 5rem;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 0 1.25rem;
+        text-align: left;
+    }
+
+    .dashboard-link .btn i {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+        margin-right: 1rem;
+    }
+
+    .dashboard-link .btn span {
+        font-size: 0.875rem;
+    }
+
+    .dashboard-link .btn:hover {
+        transform: translateY(-3px) scale(1.01);
+    }
+
+    .dashboard-link .btn:hover i {
+        transform: scale(1.1);
+    }
+
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-card .card-header {
+        padding: 0.875rem;
+    }
+
+    .dashboard-card .card-body {
+        padding: 1rem;
+    }
+
+    .dashboard-card .list-group-item {
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+    }
+
+    .progress {
+        height: 0.375rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .progress-bar {
+        font-size: 0;
+    }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .dashboard-card-glass {
+        background: rgba(15, 23, 42, 0.8); /* Increased opacity for better visibility */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Increased opacity for better visibility */
+    }
+
+    .dashboard-card-glass .card-header {
+        background: rgba(15, 23, 42, 0.7); /* Increased opacity for better visibility */
+        color: var(--text-white); /* Explicitly set text color */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for better contrast */
+    }
+
+    .dashboard-card-neumorphic {
+        background-color: var(--bg-dark);
+        box-shadow:
+            8px 8px 16px rgba(0, 0, 0, 0.3),
+            -8px -8px 16px rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Add border for better visibility */
+    }
+
+    .dashboard-card-neumorphic:hover {
+        box-shadow:
+            12px 12px 24px rgba(0, 0, 0, 0.3),
+            -12px -12px 24px rgba(255, 255, 255, 0.05);
+    }
+
+    .dashboard-card-neumorphic .card-header {
+        background-color: var(--bg-dark);
+        color: var(--text-white); /* Explicitly set text color */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for better contrast */
+    }
+
+    .dashboard-link-glass .btn {
+        background: rgba(15, 23, 42, 0.8); /* Increased opacity for better visibility */
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Increased opacity for better visibility */
+        color: var(--text-white);
+        font-weight: 700; /* Added for better visibility */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for better contrast */
+    }
+
+    .dashboard-link-neumorphic .btn {
+        background-color: var(--bg-dark);
+        box-shadow:
+            8px 8px 16px rgba(0, 0, 0, 0.3),
+            -8px -8px 16px rgba(255, 255, 255, 0.05);
+        color: var(--text-white);
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Add border for better visibility */
+        font-weight: 700; /* Added for better visibility */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for better contrast */
+    }
+
+    .dashboard-link-neumorphic .btn:hover {
+        box-shadow:
+            12px 12px 24px rgba(0, 0, 0, 0.3),
+            -12px -12px 24px rgba(255, 255, 255, 0.05);
+    }
+
+    .dashboard-link-bordered .btn {
+        background-color: var(--bg-dark);
+        color: var(--text-white);
+        border: 2px solid var(--primary); /* Ensure border is visible */
+        font-weight: 700; /* Added for better visibility */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Add text shadow for better contrast */
+    }
+
+    /* Ensure list items are visible in dark mode */
+    .dashboard-card .list-group-item {
+        color: var(--text-white);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(16, 185, 129, 0.15); /* Darker background in dark mode */
+    }
+
+    .dashboard-card .list-group-item:hover {
+        background-color: rgba(16, 185, 129, 0.3); /* Brighter highlight in dark mode */
+        border-left: 3px solid var(--primary-light); /* Lighter border in dark mode */
+    }
+
+    .dashboard-card .card-header {
+        background-color: var(--primary-dark); /* Darker background in dark mode */
+        color: var(--text-white);
+    }
+}
