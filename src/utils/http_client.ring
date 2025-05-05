@@ -39,29 +39,70 @@ class HttpClient
         }
 
     func postData cUrl, cData
+        
         try {
-            # Save data to temporary file
-            cTempFile = "temp_data.json"
-            write(cTempFile, cData)
+            if substr(cUrl, ":11434") > 0 {
+                # تنسيق خاص لـ Ollama API
+                cCommand = 'curl -X POST "' + cUrl + '" -H "Content-Type: application/json" -d ' + "'" + cData + "'"
+                //cCommand = addHeaders(cCommand)
+                ? "Executing command: " + cCommand
+                
+                if substr(cData, '"stream": true') {
+                    # معالجة الاستجابات المتدفقة
+                    cOutput1 = ""
+                    pProcess.runCommandAsync(cCommand)
+                    while true {
+                        cOutput = pProcess.readOutputAsync()
+                        if len(cOutput) = 0 { exit }
+                        ? "->> " + cOutput
+                        cOutput1 += cOutput
+                    }
+                    pProcess.waitForComplete()
+                    cError = pProcess.getStderr()
+                else
+                    # معالجة الاستجابات العادية
+                    pProcess.runCommand(cCommand)
+                    pProcess.waitForComplete()
+                    cOutput1 = pProcess.readOutput()
+                    cError = pProcess.getStderr()
+                }
+                
+                ? "cError: " + cError
+                if pProcess.getExitCode() = 0 {
+                    return [
+                        :code = 200,
+                        :body = cOutput1,
+                        :headers = aHeaders
+                    ]
+                }
+            else
+                # Save data to temporary file
+                cTempFile = "temp_data.json"
+                write(cTempFile, cData)
+                
+                    # Normal handling for other APIs
+                    cCommand = 'curl -s -X POST "' + cUrl + '" -H "Content-Type: application/json" --data @' + cTempFile
+                
 
-            //cEncodedData = URLEncode(cData)
-            cCommand = 'curl -s -X POST "' + cUrl + '" -H "Content-Type: application/json" --data @' + cTempFile
-            cCommand = addHeaders(cCommand)
+                cCommand = addHeaders(cCommand)
 
-            # ? "Executing command: " + cCommand
-            pProcess.RunCommand(cCommand)
-            pProcess.waitForComplete()
-            cOutput = pProcess.readOutput()
-            cError = pProcess.getStderr()
-            # ? "cOutput: " + cOutput
-            # Clean up temp file
-            remove(cTempFile)
-            if pProcess.getExitCode() = 0 {
-                return [
-                    :code = 200,
-                    :body = cOutput,
-                    :headers = aHeaders
-                ]
+                ? "Executing command: " + cCommand
+                pProcess.RunCommand(cCommand)
+                pProcess.waitForComplete()
+                cOutput = pProcess.readOutput()
+                cError = pProcess.getStderr()
+                ? "cOutput: " + cOutput
+                # Clean up temp file
+                remove(cTempFile)
+               
+            
+                if pProcess.getExitCode() = 0 {
+                    return [
+                        :code = 200,
+                        :body = cOutput,
+                        :headers = aHeaders
+                    ]
+                }
             }
             cLastError = iif(cError != "", cError, "Request failed with no error message")
             return NULL

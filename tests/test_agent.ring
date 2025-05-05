@@ -1,4 +1,4 @@
-Load "G:/RingAIAgents/src/libAgantAi.ring"
+Load "G:/RingAIAgents/src/libAgentAi.ring"
 
 # Test Agent Class
 func main
@@ -11,15 +11,15 @@ func main
     assert(oAgent.getName() = "TestAgent", "Testing name setter...")
     assert(oAgent.getRole() = "Tester", "Testing role setter...")
     assert(oAgent.getGoal() = "Testing the agent class", "Testing goal setter...")
-    assert(oAgent.getState() = :idle, "Testing initial state...")
+    assert(oAgent.getStatus() = :idle, "Testing initial state...")
     
     # Test state management
-    oAgent.setState(:working)
-    assert(oAgent.getState() = :working, "Testing state setter...")
+    oAgent.setStatus(:working)
+    assert(oAgent.getStatus() = :working, "Testing state setter...")
     
     # Test emotional and energy management
-    oAgent.updateEmotionalState(8)
-    assert(oAgent.getEmotionalState() = 8, "Testing emotional state...")
+    oAgent.updateEmotionalStatus(8)
+    assert(oAgent.getEmotionalStatus() = 8, "Testing emotional state...")
     
     oAgent.updateEnergyLevel(75)
     assert(oAgent.getEnergyLevel() = 75, "Testing energy level...")

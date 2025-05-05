@@ -5,7 +5,7 @@
 */
 
 # تحميل المكتبات الأساسية
-load "G:\RingAIAgents\src\libAgantAi.ring"
+load "G:\RingAIAgents\src\libAgentAi.ring"
 load "httplib.ring"
 load "weblib.ring"
 

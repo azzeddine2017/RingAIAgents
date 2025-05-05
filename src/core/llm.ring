@@ -7,8 +7,7 @@ class LLM
     GEMINI = "gemini-1.5-flash"
     GPT4 = "gpt-4"
     CLAUDE = "claude"
-    LLAMA = "llama"
-    OLLAMA = "ollama"
+    OLLAMA = "qwen3:4b"
 
     # Constructor
     func init cModelName
@@ -30,10 +29,10 @@ class LLM
     func getMetadata return aMetadata
     func getApiKey return cApiKey
     func getHistory return aConversationHistory
-    func getAvailableModels return [GEMINI, GPT4, CLAUDE, LLAMA, OLLAMA]
+    func getAvailableModels return [GEMINI, GPT4, CLAUDE, OLLAMA]
 
     func setModel cValue
-        if  find([GEMINI, GPT4, CLAUDE, LLAMA, OLLAMA], cValue){
+        if  find([GEMINI, GPT4, CLAUDE, OLLAMA], cValue){
             cModel = cValue
             if bVerbose { logger(cModel, "Model set to: " + cValue, :info) }
         }
@@ -139,6 +138,7 @@ class LLM
         try {
             # Prepare request parameters
             aRequestParams = prepareRequestParams(cPrompt, aParams)
+            ? logger(cModel, "Request params: " + aRequestParams, :info)
 
             # Make API call based on model
             switch cModel
@@ -148,10 +148,9 @@ class LLM
                     aResponse = callGPT4API(aRequestParams)
                 on CLAUDE
                     aResponse = callClaudeAPI(aRequestParams)
-                on LLAMA
-                    aResponse = callLlamaAPI(aRequestParams)
                 on OLLAMA
                     aResponse = callOllamaAPI(aRequestParams)
+
                 other
                     raise("Unsupported model: " + cModel)
             off
@@ -183,18 +182,33 @@ class LLM
         Returns: JSON string of the request parameters
     */
     func prepareRequestParams cPrompt, aParams
-        # Create base request structure
-        aRequest = [
-            :contents = [
-                [
-                    :parts = [
-                        [
-                            :text = cPrompt
+        # Create base request structure based on model
+        if cModel = OLLAMA {
+            # For Ollama, use the chat format
+            aRequest = [
+                :model = OLLAMA,
+                :messages = [
+                    [
+                        :role = "user",
+                        :content = cPrompt
+                    ]
+                ],
+                :stream = true
+            ]
+        else
+            # For other models like Gemini
+            aRequest = [
+                :contents = [
+                    [
+                        :parts = [
+                            [
+                                :text = cPrompt
+                            ]
                         ]
                     ]
                 ]
             ]
-        ]
+        }
 
         # Add generation config for Gemini
         /*if cModel = GEMINI {
@@ -213,7 +227,18 @@ class LLM
         if bVerbose {
             logger(cModel, "Request parameters prepared", :info)
         }
-        return list2JSON(aRequest)
+
+        # Convert to JSON
+        cJSON = list2JSON(aRequest)
+
+        # If this is for Ollama, fix boolean values
+        if cModel = OLLAMA {
+            # Fix the stream parameter to be a proper boolean in JSON
+            cJSON = substr(cJSON, '"stream": 0', '"stream": false')
+            cJSON = substr(cJSON, '"stream": 1', '"stream": true')
+        }
+
+        return cJSON
 
     # Serialization
     func toJSON
@@ -373,11 +398,8 @@ class LLM
         if bVerbose { logger(cModel, "Claude API response received", :info) }
         return extractClaudeResponse(oResponseData)
 
-    func callLlamaAPI aParams
-        # Implementation for local Llama model
-        if bVerbose { logger(cModel, "Llama API not implemented yet", :warning) }
-        return "Llama API not implemented yet"
 
+    # Ollama API
     func callOllamaAPI aParams
         # Implementation for Ollama API
         if bVerbose { logger(cModel, "Calling Ollama API...", :info) }
@@ -385,21 +407,39 @@ class LLM
         # Prepare request data
         aRequestData = JSON2List(aParams)
 
+        # Debug the request data
+        if bVerbose { logger(cModel, "Request data from params: " + list2json(aRequestData), :debug) }
+
+        # Extract the prompt from the request data
+        cPrompt = ""
+        if isList(aRequestData) {
+            if isList(aRequestData[:messages]) and len(aRequestData[:messages]) > 0 {
+                # Extract from messages array
+                for message in aRequestData[:messages] {
+                    if isList(message) and message[:role] = "user" and isString(message[:content]) {
+                        cPrompt = message[:content]
+                        if bVerbose { logger(cModel, "Extracted prompt from messages: " + cPrompt, :info) }
+                        exit
+                    }
+                }
+            }
+        }
+
         # If no model specified in request, use default model
         if !isList(aRequestData) or !isString(aRequestData[:model]) {
             aRequestData = [
-                :model = "llama3",  # Default model
-                :prompt = aRequestData[:prompt]
+                :model = OLLAMA,  # Default model
+                :prompt = cPrompt
             ]
         }
 
-        # Determine if we should use chat or generate endpoint based on conversation history
+        # Use chat endpoint for conversation, generate endpoint for single messages
         bUseChat = len(aConversationHistory) > 0
 
         # Prepare URL and HTTP client
-        cUrl = bUseChat ?
-            "http://localhost:11434/api/chat" :
-            "http://localhost:11434/api/generate"
+        cUrl = iif(bUseChat,
+            "http://localhost:11434/api/chat",
+            "http://localhost:11434/api/generate")
 
         oHttp = new HttpClient()
 
@@ -407,59 +447,69 @@ class LLM
         oHttp.setHeader("Content-Type", "application/json")
 
         # Prepare request data based on endpoint
-        if bUseChat {
-            # For chat endpoint, we need to format the conversation history
-            aMessages = []
+        # For chat endpoint, we need to format the conversation history
+        aMessages = []
 
-            # Add system message if available
-            if cSystemPrompt != "" {
-                add(aMessages, [
-                    :role = "system",
-                    :content = cSystemPrompt
-                ])
-            }
-
-            # Add conversation history
-            for message in aConversationHistory {
-                add(aMessages, [
-                    :role = message[:role],
-                    :content = message[:content]
-                ])
-            }
-
-            # Add current prompt as user message
+        # Add system message if available
+        if cSystemPrompt != "" {
             add(aMessages, [
-                :role = "user",
-                :content = aRequestData[:prompt]
+                :role = "system",
+                :content = cSystemPrompt
             ])
+        }
 
-            # Create chat request
+        # Add conversation history
+        for message in aConversationHistory {
+            add(aMessages, [
+                :role = message[:role],
+                :content = message[:content]
+            ])
+        }
+
+        # Add current prompt as user message
+        add(aMessages, [
+            :role = "user",
+            :content = cPrompt
+        ])
+
+        # Get model name
+        cModelName = "qwen3:4b"  # Default model
+        if isList(aRequestData) and isString(aRequestData[:model]) {
+            cModelName = aRequestData[:model]
+        }
+
+        # Create request according to Ollama API documentation
+        if bUseChat
+            # For chat endpoint
             aRequestData = [
-                :model = aRequestData[:model],
+                :model = cModelName,
                 :messages = aMessages,
-                :stream = false
+                :stream = false  # Set to false for now to debug
             ]
+        else
+            # For generate endpoint
+            aRequestData = [
+                :model = cModelName,
+                :prompt = cPrompt,
+                :stream = false  # Set to false for now to debug
+            ]
+        ok
 
-            # Add temperature if set
-            if nTemperature != 0.7 {
-                aRequestData[:temperature] = nTemperature
-            }
-        } else {
-            # For generate endpoint, we use the prompt directly
-            # Add stream parameter if not present
-            if !isNumber(aRequestData[:stream]) {
-                aRequestData[:stream] = false
-            }
-
-            # Add temperature if set
-            if nTemperature != 0.7 {
-                aRequestData[:temperature] = nTemperature
-            }
+        # Add temperature if set
+        if nTemperature != 0.7 {
+            # Add temperature in options object
+            aRequestData[:options] = [
+                :temperature = nTemperature
+            ]
         }
 
         # Convert to JSON
         cRequestData = list2JSON(aRequestData)
+        # Fix the stream parameter to be a proper boolean in JSON
+        cRequestData = substr(cRequestData, '"stream": 0', '"stream": false')
+        cRequestData = substr(cRequestData, '"stream": 1', '"stream": true')
 
+        # Log the request data for debugging
         if bVerbose {
             logger(cModel, "Ollama API URL: " + cUrl, :info)
             logger(cModel, "Ollama API Request: " + cRequestData, :info)
@@ -472,13 +522,17 @@ class LLM
         if oResponse = NULL {
             cError = "Ollama API error: " + oHttp.getLastError()
             if bVerbose { logger(cModel, cError, :error) }
-            raise(cError)
+
+            # Instead of raising an error, return a default message
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
         }
 
         if oResponse[:code] != 200 {
             cError = "Ollama API error: " + oResponse[:body]
             if bVerbose { logger(cModel, cError, :error) }
-            raise(cError)
+
+            # Instead of raising an error, return a default message
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
         }
 
         if bVerbose {
@@ -486,20 +540,69 @@ class LLM
             logger(cModel, "Response code: " + oResponse[:code], :info)
         }
 
-        # Parse response
-        oResponseData = JSON2List(oResponse[:body])
+        # Get the response body
+        cResponseBody = oResponse[:body]
 
-        if !isList(oResponseData) {
-            cError = "Invalid response format from Ollama API"
-            if bVerbose { logger(cModel, cError, :error) }
-            raise(cError)
+        # Log the raw response for debugging
+        if bVerbose {
+            logger(cModel, "Raw response body (first 200 chars): " + substr(cResponseBody, 1, 200), :debug)
         }
 
-        cResponse = extractOllamaResponse(oResponseData)
+        # Process the response based on its content
+        try {
+            # First, try to extract the response directly
+            cResponse = extractOllamaResponse(cResponseBody)
 
-        if bVerbose { logger(cModel, "Extracted response: " + cResponse, :info) }
+            # If we got a meaningful response, return it
+            if cResponse != "" and cResponse != NULL {
+                return cResponse
+            }
 
-        return cResponse
+            # If direct extraction failed, try other approaches
+            if bVerbose { logger(cModel, "Direct extraction failed, trying alternative approaches", :info) }
+
+            # Try to parse as JSON if it looks like JSON
+            if substr(cResponseBody, 1, 1) = "{" {
+                try {
+                    oResponseData = JSON2List(cResponseBody)
+                    cResponse = extractOllamaResponse(oResponseData)
+
+                    if cResponse != "" and cResponse != NULL {
+                        return cResponse
+                    }
+                catch
+                    if bVerbose { logger(cModel, "Failed to parse as JSON: " + cCatchError, :warning) }
+                }
+            }
+
+            # If it looks like a streaming response, process it accordingly
+            if substr(cResponseBody, "{") > 1 {
+                if bVerbose { logger(cModel, "Detected streaming response", :info) }
+                cResponse = extractFromStreamingResponse(cResponseBody)
+
+                if cResponse != "" and cResponse != NULL {
+                    return cResponse
+                }
+            }
+
+            # If all else fails, return the raw response if it's not too long
+            if len(cResponseBody) < 1000 and cResponseBody != "" {
+                if bVerbose { logger(cModel, "Returning raw response as fallback", :warning) }
+                return cResponseBody
+            }
+
+            # If we get here, we couldn't extract a meaningful response
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
+        catch
+            cError = "Error processing Ollama API response: " + cCatchError
+            if bVerbose { logger(cModel, cError, :error) }
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
+        }
+
+        # This code is unreachable due to the try/catch block above
+        # Keeping it commented for reference
+        # if bVerbose { logger(cModel, "Extracted response: " + cResponse, :info) }
+        # return cResponse
 
     # Response Extraction
     func extractGeminiResponse aResponse
@@ -568,25 +671,159 @@ class LLM
         }
 
     func extractOllamaResponse aResponse
-        if !isList(aResponse) { return "" }
+        # First, check if the response is a string or not a list
+        if !isList(aResponse) {
+            # If it's a string, try to parse it as JSON
+            if isString(aResponse) {
+                if bVerbose { logger(cModel, "Response is a string, trying to parse as JSON", :info) }
+
+                # Try to parse as JSON
+                try {
+                    oJson = JSON2List(aResponse)
+                    if isList(oJson) {
+                        # If successful, process the parsed JSON
+                        return extractOllamaResponse(oJson)
+                    }
+                catch
+                    # If it's a streaming response, process it accordingly
+                    if substr(aResponse, "{") > 1 {
+                        if bVerbose { logger(cModel, "Received streaming response, processing...", :info) }
+                        return extractFromStreamingResponse(aResponse)
+                    }
+
+                    # If it's just plain text, return it directly
+                    if bVerbose { logger(cModel, "Response appears to be plain text", :info) }
+                    return aResponse
+                }
+            }
+
+            # If we get here, we couldn't process the response
+            if bVerbose { logger(cModel, "Response is not a list or valid JSON string", :warning) }
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
+        }
+
         try {
-            # For the generate endpoint, the response is in the 'response' field
-            if isString(aResponse[:response]) {
+            # Log the response structure for debugging
+            if bVerbose {
+                logger(cModel, "Extracting response from Ollama API", :info)
+                logger(cModel, "Response structure: " + list2json(aResponse), :debug)
+            }
+
+            # For the chat endpoint, check if message field exists
+            if isList(aResponse) and aResponse[:message] != NULL {
+                # Check if message is a list with content field
+                if isList(aResponse[:message]) and aResponse[:message][:content] != NULL {
+                    return aResponse[:message][:content]
+                }
+
+                # Check if message has direct content field
+                if aResponse[:message][:content] != NULL {
+                    return aResponse[:message][:content]
+                }
+            }
+
+            # For the generate endpoint, check if response field exists
+            if isList(aResponse) and aResponse[:response] != NULL {
                 return aResponse[:response]
             }
 
-            # For the chat endpoint, the response might be in a different format
-            if isList(aResponse[:message]) and isString(aResponse[:message][:content]) {
-                return aResponse[:message][:content]
+            # Check for other common response formats
+            if isList(aResponse) and aResponse[:content] != NULL {
+                return aResponse[:content]
             }
 
-            # If we can't find the response in expected fields, return empty string
-            if bVerbose { logger(cModel, "Could not find response in Ollama API response", :warning) }
-            return ""
+            if isList(aResponse) and aResponse[:text] != NULL {
+                return aResponse[:text]
+            }
+
+            # If we can't find the response in expected fields, return a default message
+            if bVerbose {
+                logger(cModel, "Could not find response in Ollama API response", :warning)
+                logger(cModel, "Response structure: " + list2json(aResponse), :debug)
+            }
+            return "I apologize, but I couldn't extract a meaningful response from the API."
         catch
-            if bVerbose { logger(cModel, "Error extracting Ollama response: " + cCatchError, :error) }
-            return ""
+            if bVerbose {
+                logger(cModel, "Error extracting Ollama response: " + cCatchError, :error)
+                # Don't try to convert to JSON if it's not a list
+                if isList(aResponse) {
+                    logger(cModel, "Response structure: " + list2json(aResponse), :debug)
+                else
+                    logger(cModel, "Response is not a list", :debug)
+                }
+            }
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
         }
+
+    # Helper function to extract content from streaming response
+    func extractFromStreamingResponse cResponse
+        if !isString(cResponse) { return "" }
+
+        cFullContent = ""
+        aLines = str2list(cResponse, nl)
+
+        # Log the number of lines received
+        if bVerbose { logger(cModel, "Processing streaming response with " + len(aLines) + " lines", :info) }
+
+        # If we received no lines or empty response, return a default message
+        if len(aLines) = 0 or trim(cResponse) = "" {
+            if bVerbose { logger(cModel, "Empty streaming response received", :warning) }
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
+        }
+
+        # Process each line of the streaming response
+        for cLine in aLines {
+            if trim(cLine) = "" { loop }
+
+            try {
+                # Try to parse the line as JSON
+                oJson = JSON2List(cLine)
+
+                # For chat endpoint
+                if isList(oJson) and isList(oJson[:message]) and isString(oJson[:message][:content]) {
+                    # Add the content to our accumulated response
+                    cFullContent += oJson[:message][:content]
+
+                    # For debugging
+                    if bVerbose and len(cFullContent) % 50 = 0 {
+                        logger(cModel, "Accumulated " + len(cFullContent) + " characters so far", :debug)
+                    }
+
+                # For generate endpoint
+                elseif isList(oJson) and isString(oJson[:response])
+                    cFullContent += oJson[:response]
+                }
+
+                # Check if this is the last message in the stream
+                if isList(oJson) and oJson[:done] = true {
+                    if bVerbose { logger(cModel, "Found end of stream marker", :info) }
+                }
+            catch
+                if bVerbose { logger(cModel, "Error parsing JSON line: " + cLine, :error) }
+            }
+        }
+
+        # Clean up the content - remove any <think> tags that might be in the response
+        cFullContent = substr(cFullContent, "<think>", "")
+        cFullContent = substr(cFullContent, "</think>", "")
+
+        # If we still have no content after processing, return a default message
+        if trim(cFullContent) = "" {
+            if bVerbose { logger(cModel, "No content extracted from streaming response", :warning) }
+            return "I apologize, but I couldn't generate a response at this time. Please try again."
+        }
+
+        # If we have at least some content, consider it a success
+        if len(cFullContent) > 0 {
+            if bVerbose {
+                logger(cModel, "Successfully extracted " + len(cFullContent) + " characters from streaming response", :success)
+                logger(cModel, "First 100 characters: " + substr(cFullContent, 1, 100) + "...", :info)
+            }
+            return cFullContent
+        }
+
+        if bVerbose { logger(cModel, "Extracted content from streaming response: " + cFullContent, :info) }
+        return cFullContent
 
     # Caching
     func checkCache cPrompt

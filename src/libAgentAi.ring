@@ -37,9 +37,12 @@ Load "G:\RingAIAgents\src\tools\development_tools.ring"
 Load "G:\RingAIAgents\src\tools\DefaultTools.ring"
 //Load "G:\RingAIAgents\src\tools\advancedtools.ring"
 
+# تهيئة النظام
+serverdebug = true
+aDebag = [:error, :info]
+
 if isMainSourceFile() {
-    serverdebug = true
-    aDebag = [:error, :info]
+   
     # Initialize the system
     oSystem = new AgentAI()
 
