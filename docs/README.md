@@ -25,14 +25,7 @@ A comprehensive AI agent management system with MorGen AI support.
 - Subtasks
 - Reports and statistics
 
-### 4. Artificial Intelligence
-- MorGen integration
-- Advanced language models
-- Reinforcement learning
-- Intelligent memory
-- Sentiment analysis
-
-### 5. Monitoring and Analysis
+### 4. Monitoring and Analysis
 - Performance monitoring
 - Data analysis
 - Detailed reports
@@ -62,7 +55,6 @@ A comprehensive AI agent management system with MorGen AI support.
 ### 3. Tools and Libraries
 - RingQt
 - SQLite
-- MorGen
 - RingThreadPro
 - HTTP Client
 
@@ -76,34 +68,7 @@ A comprehensive AI agent management system with MorGen AI support.
 
 ### Libraries
 - RingThreadPro
-- MorGen
 - RingAIAgents Core
-
-## Installation
-
-1. Install Ring
-```
-ring.exe
-```
-
-2. Install Libraries
-```
-ringpm install ringqt
-ringpm install sqlitelib
-ringpm install threadpro
-```
-
-3. Install MorGen
-```
-git clone https://github.com/MahmoudFayed/MorGen.git
-```
-
-4. Install RingAI Agents
-```
-git clone https://github.com/YourUsername/RingAIAgents.git
-cd RingAIAgents
-ring install.ring
-```
 
 ## Usage
 
