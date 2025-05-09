@@ -205,9 +205,3 @@ class AgentAI
         aTeams
         aTools
         aTasks
-
-        # الدوال المساعدة
-        func logger cMessage, cType
-            if bVerbose {
-                ? "[" + cType + "] " + cMessage
-            }
