@@ -14,5 +14,8 @@ aUsers = []      # قائمة المستخدمين
 oMonitor = NULL  # مراقب الأداء
 oMemory = NULL   # نظام الذاكرة
 oLLM = NULL      # نموذج اللغة
-ocrew = NULL     # فريق العملاء
+ocrew1 = NULL     # فريق العملاء
 oTask = NULL	 	 # مهمة
+odevteam = NULL  # فريق التطوير
+osupportteam = NULL # فريق الدعم
+

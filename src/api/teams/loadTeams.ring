@@ -41,7 +41,7 @@ func loadTeams
                     oLeader = NULL
                     ? logger("loadTeams function", "Looking for leader with ID: " + aResult[:leader_id], :info)
                     for i = 1 to len(aAgents) {
-                        if isObject(aAgents[i]) and methodExists(aAgents[i], "getId") {
+                        if isObject(aAgents[i]) and methodExists(aAgents[i], :getId) {
                             if aAgents[i].getId() = aResult[:leader_id] {
                                 oLeader = aAgents[i]
                                 ? logger("loadTeams function", "Found leader: " + aAgents[i].getName(), :info)
@@ -57,16 +57,16 @@ func loadTeams
 
                     # إنشاء فريق جديد
                     if oLeader != NULL {
-                        oCrew = new Crew(aResult[:name], oLeader)
+                        oCrew1 = new Crew("oCrew1 ", aResult[:name], oLeader)
 
                         # تعيين المعرف والهدف
-                        oCrew.setId(aResult[:id])
+                        oCrew1.setId(aResult[:id])
 
                         # تسجيل الهدف للتصحيح
                         ? logger("loadTeams function", "Loading objective for team " + aResult[:id] + ": " + aResult[:objective], :info)
 
                         # تعيين الهدف
-                        oCrew.setObjective(aResult[:objective])
+                        oCrew1.setObjective(aResult[:objective])
 
                         # إضافة الأعضاء
                         try {
@@ -97,7 +97,7 @@ func loadTeams
                                     for i = 1 to len(aAgents) {
                                         if aAgents[i].getId() = cMemberId {
                                             ? logger("loadTeams function", "Adding member: " + aAgents[i].getName() + " with ID: " + cMemberId, :info)
-                                            oCrew.addMember(aAgents[i])
+                                            oCrew1.addMember(aAgents[i])
                                             exit
                                         }
                                     }
@@ -110,11 +110,11 @@ func loadTeams
                         }
 
                         # إضافة الفريق إلى القائمة
-                        add(aTeams, oCrew)
+                        add(aTeams, oCrew1)
 
                         # تسجيل الفريق في المراقب
                         try {
-                            oMonitor.registerCrew(oCrew)
+                            oMonitor.registerCrew(oCrew1)
                         catch
                             ? logger("loadTeams function", "Error registering crew with monitor: " + cCatchError, :error)
                         }
@@ -131,7 +131,7 @@ func loadTeams
             ? logger("loadTeams function", "No teams loaded, creating default teams", :info)
 
             # إنشاء فريق التطوير
-            oDevTeam = new Crew("Development Team", aAgents[1])
+            oDevTeam = new Crew("oDevTeam", "Development Team", aAgents[1])
             oDevTeam.setObjective("Build software")
 
             # إضافة أعضاء الفريق
@@ -151,7 +151,7 @@ func loadTeams
 
             # إنشاء فريق الدعم إذا كان هناك عملاء كافيين
             if len(aAgents) >= 5 {
-                oSupportTeam = new Crew("Support Team", aAgents[5])
+                oSupportTeam = new Crew("oSupportTeam", "Support Team", aAgents[5])
                 oSupportTeam.setObjective("Help users")
 
                 # إضافة أعضاء الفريق

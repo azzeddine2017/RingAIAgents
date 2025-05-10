@@ -77,7 +77,7 @@ func showTasks
                                             td { text(oTask.getTitle()) }
                                             td { text(oTask.getDescription()) }
                                             td { text(oTask.getAssignedTo().getName()) }
-                                           /* td {
+                                            td {
                                                 span {
                                                     classname = "badge badge-" +
                                                         iif(oTask.getPriority() = 1, "danger",
@@ -109,7 +109,7 @@ func showTasks
                                                             iif(oTask.getStatus() = "In Progress", "primary", "secondary"))
                                                     text(oTask.getStatus())
                                                 }
-                                            }*/
+                                            }
                                             td {
                                                 div {
                                                     classname = "btn-group btn-group-sm"

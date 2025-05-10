@@ -1,4 +1,4 @@
-Load "G:\RingAIAgents\src\libAgantAi.ring"
+Load "G:\RingAIAgents\src\libAgentAi.ring"
 
 /*
 المثال: تدفق العمل مع الوكلاء والفرق
