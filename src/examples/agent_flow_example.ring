@@ -5,8 +5,7 @@ Load "G:\RingAIAgents\src\libAgentAi.ring"
 الوصف: مثال يوضح كيفية استخدام التدفقات مع الوكلاء والفرق في نظام RingAI Agents
 */
 
-serverdebug = true
-aDebag = [:error, :info]
+odevteam = null
 
 
 # مثال استخدام

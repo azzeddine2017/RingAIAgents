@@ -17,5 +17,4 @@ oApp = new QApp {
     # Create and show the main window
     oWindow = new MainWindow()
     exec()
-     ? applicationState()
 }

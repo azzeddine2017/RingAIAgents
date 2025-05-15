@@ -1,7 +1,7 @@
 load "openssllib.ring"
 load "jsonlib.ring"
 load "G:/RingAIAgents/src/security/EncryptionManager.ring"
-load "G:/RingAIAgents/src/utils/helpers.ring"
+//load "G:/RingAIAgents/src/utils/helpers.ring"
 /*
 Class: SessionManager
 Description: مدير جلسات المستخدمين

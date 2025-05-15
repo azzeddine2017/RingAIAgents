@@ -15,7 +15,7 @@ class InputValidator {
     aSuspiciousPatterns
     
     func init {
-        oConfig = new SecurityConfig()
+        oConfig = new SecurityConfig
         
         # نسخ الإعدادات من الكائن oConfig مع التحويل الصحيح للقيم
         try {
