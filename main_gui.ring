@@ -13,7 +13,6 @@ load "src/gui/main_window.ring"
 
 # Start the application
 oApp = new QApp {
-    ? applicationState()
     # Create and show the main window
     oWindow = new MainWindow()
     exec()

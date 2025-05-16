@@ -27,12 +27,12 @@ class DashboardManager {
 
     func saveLayout {
         cLayout = JSON2STR(oCurrentLayout)
-        write("settings/dashboard_layout.json", cLayout)
+        write(currentdir() + "/settings/dashboard_layout.json", cLayout)
     }
 
     func loadLayout cName {
-        if fexists("layouts/" + cName + ".json") {
-            cContent = read("layouts/" + cName + ".json")
+        if fexists(currentdir() + "/layouts/" + cName + ".json") {
+            cContent = read(currentdir() + "/layouts/" + cName + ".json")
             oCurrentLayout = STR2JSON(cContent)
             applyLayout()
         }
@@ -73,8 +73,8 @@ class DashboardManager {
     }
 
     func loadUserLayout {
-        if fexists("settings/dashboard_layout.json") {
-            cContent = read("settings/dashboard_layout.json")
+        if fexists(currentdir() + "/settings/dashboard_layout.json") {
+            cContent = read(currentdir() + "/settings/dashboard_layout.json")
             oCurrentLayout = STR2JSON(cContent)
         else
             loadDefaultLayout()
@@ -115,7 +115,9 @@ class DashboardManager {
     func updateDashboard {
         # Refresh all widgets
         for widget in aWidgets {
-            widget.refresh()
+            if isObject(widget) and method_exists(widget, "refresh") {
+                widget.refresh()
+            }
         }
     }
 
@@ -125,13 +127,13 @@ class DashboardManager {
         oCurrentLayout[:positions] = []
     }
 
-    func setupDashboard {
+    func setupDashboard oParent {
         # Create dashboard layout
         oDashboardLayout = new QVBoxLayout()
         oDashboardLayout.setSpacing(15)
 
         # Header with gradient background
-        oHeaderFrame = new QFrame()
+        oHeaderFrame = new QFrame(oParent)
         oHeaderFrame.setStyleSheet("
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #3498db, stop:1 #2980b9);
             border-radius: 8px;
@@ -140,13 +142,13 @@ class DashboardManager {
         ")
         oHeaderLayout = new QHBoxLayout()
 
-        oTitleLabel = new QLabel("Dashboard")
+        oTitleLabel = new QLabel("Dashboard", oHeaderFrame)
         oTitleLabel.setStyleSheet("font-size: 28px; font-weight: bold; color: white;")
         oHeaderLayout.addWidget(oTitleLabel)
 
         oHeaderLayout.addStretch()
 
-        oRefreshButton = new QPushButton("⟳ Refresh")
+        oRefreshButton = new QPushButton("⟳ Refresh", oHeaderFrame)
         oRefreshButton.setStyleSheet("
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
@@ -165,7 +167,7 @@ class DashboardManager {
         oStatsLayout.setSpacing(15)
 
         # Agents card
-        oAgentsCard = new QFrame()
+        oAgentsCard = new QFrame(oParent)
         oAgentsCard.setFrameShape(QFrame_StyledPanel)
         oAgentsCard.setStyleSheet("
             background-color: white;
@@ -177,17 +179,17 @@ class DashboardManager {
         oAgentsCardLayout = new QVBoxLayout()
         oAgentsCardLayout.setAlignment(Qt_AlignCenter)
 
-        oAgentsIconLabel = new QLabel("👤")
+        oAgentsIconLabel = new QLabel("👤", oAgentsCard)
         oAgentsIconLabel.setStyleSheet("font-size: 32px; color: #3498db; margin-bottom: 10px;")
         oAgentsIconLabel.setAlignment(Qt_AlignCenter)
         oAgentsCardLayout.addWidget(oAgentsIconLabel)
 
-        oAgentsCountLabel = new QLabel("0")
+        oAgentsCountLabel = new QLabel("0", oAgentsCard)
         oAgentsCountLabel.setStyleSheet("font-size: 42px; font-weight: bold; color: #2c3e50;")
         oAgentsCountLabel.setAlignment(Qt_AlignCenter)
         oAgentsCardLayout.addWidget(oAgentsCountLabel)
 
-        oAgentsTextLabel = new QLabel("Agents")
+        oAgentsTextLabel = new QLabel("Agents", oAgentsCard)
         oAgentsTextLabel.setStyleSheet("font-size: 16px; color: #7f8c8d;")
         oAgentsTextLabel.setAlignment(Qt_AlignCenter)
         oAgentsCardLayout.addWidget(oAgentsTextLabel)
@@ -196,7 +198,7 @@ class DashboardManager {
         oStatsLayout.addWidget(oAgentsCard)
 
         # Crews card
-        oCrewsCard = new QFrame()
+        oCrewsCard = new QFrame(oParent)
         oCrewsCard.setFrameShape(QFrame_StyledPanel)
         oCrewsCard.setStyleSheet("
             background-color: white;
@@ -208,17 +210,17 @@ class DashboardManager {
         oCrewsCardLayout = new QVBoxLayout()
         oCrewsCardLayout.setAlignment(Qt_AlignCenter)
 
-        oCrewsIconLabel = new QLabel("👥")
+        oCrewsIconLabel = new QLabel("👥", oCrewsCard)
         oCrewsIconLabel.setStyleSheet("font-size: 32px; color: #9b59b6; margin-bottom: 10px;")
         oCrewsIconLabel.setAlignment(Qt_AlignCenter)
         oCrewsCardLayout.addWidget(oCrewsIconLabel)
 
-        oCrewsCountLabel = new QLabel("0")
+        oCrewsCountLabel = new QLabel("0", oCrewsCard)
         oCrewsCountLabel.setStyleSheet("font-size: 42px; font-weight: bold; color: #2c3e50;")
         oCrewsCountLabel.setAlignment(Qt_AlignCenter)
         oCrewsCardLayout.addWidget(oCrewsCountLabel)
 
-        oCrewsTextLabel = new QLabel("Crews")
+        oCrewsTextLabel = new QLabel("Crews", oCrewsCard)
         oCrewsTextLabel.setStyleSheet("font-size: 16px; color: #7f8c8d;")
         oCrewsTextLabel.setAlignment(Qt_AlignCenter)
         oCrewsCardLayout.addWidget(oCrewsTextLabel)
@@ -227,7 +229,7 @@ class DashboardManager {
         oStatsLayout.addWidget(oCrewsCard)
 
         # Tasks card
-        oTasksCard = new QFrame()
+        oTasksCard = new QFrame(oParent)
         oTasksCard.setFrameShape(QFrame_StyledPanel)
         oTasksCard.setStyleSheet("
             background-color: white;
@@ -239,17 +241,17 @@ class DashboardManager {
         oTasksCardLayout = new QVBoxLayout()
         oTasksCardLayout.setAlignment(Qt_AlignCenter)
 
-        oTasksIconLabel = new QLabel("📋")
+        oTasksIconLabel = new QLabel("📋", oTasksCard)
         oTasksIconLabel.setStyleSheet("font-size: 32px; color: #e67e22; margin-bottom: 10px;")
         oTasksIconLabel.setAlignment(Qt_AlignCenter)
         oTasksCardLayout.addWidget(oTasksIconLabel)
 
-        oTasksCountLabel = new QLabel("0")
+        oTasksCountLabel = new QLabel("0", oTasksCard)
         oTasksCountLabel.setStyleSheet("font-size: 42px; font-weight: bold; color: #2c3e50;")
         oTasksCountLabel.setAlignment(Qt_AlignCenter)
         oTasksCardLayout.addWidget(oTasksCountLabel)
 
-        oTasksTextLabel = new QLabel("Tasks")
+        oTasksTextLabel = new QLabel("Tasks", oTasksCard)
         oTasksTextLabel.setStyleSheet("font-size: 16px; color: #7f8c8d;")
         oTasksTextLabel.setAlignment(Qt_AlignCenter)
         oTasksCardLayout.addWidget(oTasksTextLabel)
@@ -258,7 +260,7 @@ class DashboardManager {
         oStatsLayout.addWidget(oTasksCard)
 
         # Completed tasks card
-        oCompletedCard = new QFrame()
+        oCompletedCard = new QFrame(oParent)
         oCompletedCard.setFrameShape(QFrame_StyledPanel)
         oCompletedCard.setStyleSheet("
             background-color: white;
@@ -270,17 +272,17 @@ class DashboardManager {
         oCompletedCardLayout = new QVBoxLayout()
         oCompletedCardLayout.setAlignment(Qt_AlignCenter)
 
-        oCompletedIconLabel = new QLabel("✅")
+        oCompletedIconLabel = new QLabel("✅", oCompletedCard)
         oCompletedIconLabel.setStyleSheet("font-size: 32px; color: #2ecc71; margin-bottom: 10px;")
         oCompletedIconLabel.setAlignment(Qt_AlignCenter)
         oCompletedCardLayout.addWidget(oCompletedIconLabel)
 
-        oCompletedCountLabel = new QLabel("0")
+        oCompletedCountLabel = new QLabel("0", oCompletedCard)
         oCompletedCountLabel.setStyleSheet("font-size: 42px; font-weight: bold; color: #2c3e50;")
         oCompletedCountLabel.setAlignment(Qt_AlignCenter)
         oCompletedCardLayout.addWidget(oCompletedCountLabel)
 
-        oCompletedTextLabel = new QLabel("Completed")
+        oCompletedTextLabel = new QLabel("Completed", oCompletedCard)
         oCompletedTextLabel.setStyleSheet("font-size: 16px; color: #7f8c8d;")
         oCompletedTextLabel.setAlignment(Qt_AlignCenter)
         oCompletedCardLayout.addWidget(oCompletedTextLabel)
@@ -291,7 +293,7 @@ class DashboardManager {
         oDashboardLayout.addLayout(oStatsLayout)
 
         # Recent activity
-        oActivityFrame = new QFrame()
+        oActivityFrame = new QFrame(oParent)
         oActivityFrame.setFrameShape(QFrame_StyledPanel)
         oActivityFrame.setStyleSheet("
             background-color: white;
@@ -302,11 +304,11 @@ class DashboardManager {
         ")
         oActivityLayout = new QVBoxLayout()
 
-        oActivityHeader = new QLabel("Recent Activity")
+        oActivityHeader = new QLabel("Recent Activity", oActivityFrame)
         oActivityHeader.setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;")
         oActivityLayout.addWidget(oActivityHeader)
 
-        oActivityList = new QListWidget()
+        oActivityList = new QListWidget(oActivityFrame)
         oActivityList.setStyleSheet("
             QListWidget {
                 border: 1px solid #e1e8ed;
@@ -328,14 +330,22 @@ class DashboardManager {
         oActivityFrame.setLayout(oActivityLayout)
         oDashboardLayout.addWidget(oActivityFrame)
 
+        # Create dashboard widget
+        oDashboardWidget = new QWidget(oParent)
+
         # Set the layout
         oDashboardWidget.setLayout(oDashboardLayout)
 
         # Connect signals
-        oRefreshButton.setclickevent("refreshDashboard()")
+        oRefreshButton.setclickevent(method(:refreshDashboard))
 
-        # Initial refresh
-        refreshDashboard()
+        # Return the widget
+        return oDashboardWidget
+    }
+
+    func refreshDashboard {
+        # Refresh dashboard data
+        ? "Dashboard refreshed"
     }
 
 }

@@ -1,0 +1,11 @@
+{
+    "theme": "light",
+    "language": "en",
+    "updateInterval": 5000,
+    "maxAgents": 100,
+    "maxCrews": 20,
+    "maxTasksPerAgent": 10,
+    "backupInterval": 3600,
+    "logLevel": "info",
+    "notifications": true
+}

@@ -221,30 +221,6 @@ class ThemeManager {
         }
     }
 
-    private
-
-
-    func loadUserPreference {
-        # Load from settings file
-        if fexists("settings/theme.ini") {
-            cContent = read("settings/theme.ini")
-            cCurrentTheme = trim(cContent)
-        }
-    }
-
-    func saveUserPreference {
-        write("settings/theme.ini", cCurrentTheme)
-    }
-
-    func applyTheme {
-        oTheme = getCurrentTheme()
-        # Apply to all windows and widgets
-        updateAllWindows(oTheme)
-
-        # Notify about theme change
-        ? "Theme changed to: " + cCurrentTheme
-    }
-
     func getThemeNames {
         aNames = []
         for cKey in aThemes {
@@ -368,6 +344,29 @@ class ThemeManager {
                        "font-family: " + oTheme[:font_family] + "; " +
                        "font-size: " + oTheme[:font_size_normal] + ";"
         }
+    }
+
+    func applyTheme {
+        oTheme = getCurrentTheme()
+        # Apply to all windows and widgets
+        # updateAllWindows(oTheme) - This function is not defined yet
+
+        # Notify about theme change
+        ? "Theme changed to: " + cCurrentTheme
+    }
+
+    private
+
+    func loadUserPreference {
+        # Load from settings file
+        if fexists(currentdir() + "/settings/theme.ini") {
+            cContent = read(currentdir() + "/settings/theme.ini")
+            cCurrentTheme = trim(cContent)
+        }
+    }
+
+    func saveUserPreference {
+        write(currentdir() + "/settings/theme.ini", cCurrentTheme)
     }
 
 }

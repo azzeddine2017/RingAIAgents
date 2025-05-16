@@ -8,6 +8,7 @@ class LanguageManager {
     aLanguages = [:en, :ar]
     cCurrentLang = :en
     aTranslations = []
+    cContentDir = currentdir()
 
     func init {
         loadLanguages()
@@ -29,7 +30,7 @@ class LanguageManager {
         return cKey
     }
 
-    //private
+    private
 
     func loadLanguages {
         # Load English translations
@@ -215,19 +216,19 @@ class LanguageManager {
     }
 
     func loadUserPreference {
-        if fexists("settings/language.ini") {
-            cContent = read("settings/language.ini")
+        if fexists(cContentDir + "/settings/language.ini") {
+            cContent = read(cContentDir + "/settings/language.ini")
             cCurrentLang = trim(cContent)
         }
     }
 
     func saveUserPreference {
-        write("settings/language.ini", cCurrentLang)
+        write(cContentDir + "/settings/language.ini", cCurrentLang)
     }
 
     func applyLanguage {
         # Update all UI elements
-        updateAllTexts()
+        # updateAllTexts() - This function is not defined yet
 
         # Set text direction based on language
         if cCurrentLang = :ar {

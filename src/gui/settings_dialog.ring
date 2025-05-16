@@ -5,7 +5,7 @@
 الوصف: إدارة إعدادات النظام
 */
 class Settings
-    cSettingsFile = "settings.json"
+    cSettingsFile = currentdir() + "/settings/settings.json"
 
     # Default settings
     oDefaults = [
@@ -34,12 +34,20 @@ class Settings
                 oSettings = json2list(cContent)
             catch
                 ? "Error loading settings: " + cCatchError
+                oSettings = oDefaults
             }
+        else
+            # If settings file doesn't exist, create it with default settings
+            save()
         }
     }
 
     func save {
         try {
+            # Ensure settings directory exists
+            if not fexists(currentdir() + "/settings") {
+                system("mkdir " + currentdir() + "/settings")
+            }
             write(cSettingsFile, list2json(oSettings))
             return true
         catch

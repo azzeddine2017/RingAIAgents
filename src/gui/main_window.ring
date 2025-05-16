@@ -526,18 +526,7 @@ class MainWindow from qMainWindow {
         updateMonitor()
     }
 
-  /*  func createMenuBar {
-
-    }
-
-    func createToolbar {
-
-    }
-
-    func createStatusBar {
-
-    }*/
-
+    # Create dashboard tab
     func createDashboardTab {
         oWidget = new QWidget()
         oLayout = new QVBoxLayout()
@@ -1463,7 +1452,7 @@ class MainWindow from qMainWindow {
     ###############################################
     # Private Helper Methods
     ###############################################
-    private
+    //private
 
     func getTotalTasks {
         nTotal = 0
