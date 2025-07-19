@@ -4,7 +4,7 @@
 */
 
 # Load required libraries
-Load "G:/RingAIAgents/src/libAgentAi.ring"
+Load "../src/libAgentAi.ring"
 
 # Set verbose mode for debugging
 bVerbose = true

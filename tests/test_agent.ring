@@ -1,4 +1,4 @@
-Load "G:/RingAIAgents/src/libAgentAi.ring"
+Load "../src/libAgentAi.ring"
 
 # Test Agent Class
 func main

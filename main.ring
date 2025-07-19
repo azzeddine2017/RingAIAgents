@@ -5,7 +5,7 @@
 */
 
 # Load the core library
-load "src/libAgantAi.ring"
+load "src/libAgentAi.ring"
 
 # Initialize the system
 oSystem = new AgentAI()

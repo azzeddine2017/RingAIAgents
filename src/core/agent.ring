@@ -73,8 +73,8 @@ class Agent
     func getLanguageModel return cLanguageModel
     func getPerformanceScore() return (nEmotionalStatus + nEnergyLevel + nConfidenceLevel) / 3
     
-    func setCrew oCrew
-        this.oCrew = oCrew
+    func setCrew oTeam
+        oCrew = oTeam
         return self
 
     func setName cValue

@@ -601,7 +601,7 @@ class Crew
         oBestAgent = null
 
         for oAgent in aMembers {
-            if oAgent.getState() = oAgent.IDLE {
+            if oAgent.getStatus() = oAgent.IDLE {
                 nScore = calculateAgentTaskScore(oAgent, oTask)
                 if nScore > nHighestScore {
                     nHighestScore = nScore

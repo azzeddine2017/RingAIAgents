@@ -1,7 +1,6 @@
-Load "G:/RingAIAgents/src/libAgantAi.ring"
+Load "../src/libAgentAi.ring"
 
-ServerDebug = true  # stop debugging false
-aDebag = [:error, :info]
+
 # Test Crew Class
 func main
     ? "=== Testing Crew Class ==="
@@ -15,7 +14,7 @@ func main
     ])
     
     # Test initialization
-    oCrew = new Crew("TestCrew", oLeader)
+    oCrew = new Crew("oCrew", "TestCrew", oLeader)
     assert(oCrew.getName() = "TestCrew", "Testing initialization...")
     assert(oCrew.getLeader().getName() = oLeader.getName(), "Testing leader initialization...")
     assert(len(oCrew.getMembers()) = 1, "Testing members initialization...")  # Leader is also a member
@@ -59,7 +58,7 @@ func main
     oTask2.setPriority(2)
     assert(oCrew.addTask(oTask2), "Testing task addition...")
     assert(len(oCrew.getTaskQueue()) = 2, "Testing task queue...")
-    
+     
     # Test work plan creation
     aWorkPlan = oCrew.createWorkPlan()
     assert(len(aWorkPlan) > 0, "Testing work plan creation...")
@@ -87,7 +86,7 @@ func main
     cJSON = oCrew.toJSON()
     assert(type(cJSON) = "STRING", "Testing JSON serialization...")
     
-    oNewCrew = new Crew("NewCrew", oLeader)
+    oNewCrew = new Crew("oNewCrew","NewCrew", oLeader)
     oNewCrew.fromJSON(cJSON)
     assert(oNewCrew.getName() = oCrew.getName(), "Testing JSON deserialization...")
     

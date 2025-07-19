@@ -1,4 +1,4 @@
-Load "G:/RingAIAgents/src/libAgantAi.ring"
+Load "../src/libAgentAi.ring"
 
 /*
     Test Suite for HttpClient Class

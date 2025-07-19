@@ -15,27 +15,27 @@ load "subprocess.ring"
 load "openssllib.ring"
 
 # تحميل المكتبات المساعدة
-load "G:/RingAIAgents/src/utils/ringToJson.ring"
-Load "G:/RingAIAgents/src/utils/helpers.ring"
-Load "G:/RingAIAgents/src/utils/http_client.ring"
-Load "G:/RingAIAgents/src/core/state.ring"
+load "utils/ringToJson.ring"
+Load "utils/helpers.ring"
+Load "utils/http_client.ring"
+Load "core/state.ring"
 
 # تحميل المكونات الأساسية بالترتيب الصحيح
-Load "G:/RingAIAgents/src/core/tools.ring"      # لا يعتمد على أي مكون آخر
-Load "G:/RingAIAgents/src/core/memory.ring"     # لا يعتمد على أي مكون آخر
-Load "G:/RingAIAgents/src/core/task.ring"       # لا يعتمد على أي مكون آخر
-Load "G:/RingAIAgents/src/core/llm.ring"        # يعتمد على helpers
-Load "G:/RingAIAgents/src/core/monitor.ring"    # لا يعتمد على أي مكون آخر
-Load "G:/RingAIAgents/src/core/reinforcement.ring" # لا يعتمد على أي مكون آخر
-Load "G:/RingAIAgents/src/core/flow.ring"       # يعتمد على state
-Load "G:/RingAIAgents/src/core/agent.ring"      # يعتمد على llm, task, memory, tools
-Load "G:/RingAIAgents/src/core/crew.ring"       # يعتمد على agent
-Load "G:/RingAIAgents/src/core/integration.ring" # يعتمد على memory, task, agent, crew
+Load "core/tools.ring"      # لا يعتمد على أي مكون آخر
+Load "core/memory.ring"     # لا يعتمد على أي مكون آخر
+Load "core/task.ring"       # لا يعتمد على أي مكون آخر
+Load "core/llm.ring"        # يعتمد على helpers
+Load "core/monitor.ring"    # لا يعتمد على أي مكون آخر
+Load "core/reinforcement.ring" # لا يعتمد على أي مكون آخر
+Load "core/flow.ring"       # يعتمد على state
+Load "core/agent.ring"      # يعتمد على llm, task, memory, tools
+Load "core/crew.ring"       # يعتمد على agent
+Load "core/integration.ring" # يعتمد على memory, task, agent, crew
 
 # تحميل أدوات البناء 
-Load "G:\RingAIAgents\src\tools\development_tools.ring"
-Load "G:\RingAIAgents\src\tools\DefaultTools.ring"
-//Load "G:\RingAIAgents\src\tools\advancedtools.ring"
+Load "tools\development_tools.ring"
+Load "tools\DefaultTools.ring"
+//Load "tools\advancedtools.ring"
 
 # تهيئة النظام
 serverdebug = true
@@ -60,7 +60,7 @@ if isMainSourceFile() {
     oBackendDev.addSkill("Databases", 80)
 
     # Create a team
-    oDevTeam = oSystem.createTeam("Development Team", oBackendDev)
+    oDevTeam = oSystem.createTeam("oDevTeam", "Development Team", oBackendDev)
     oDevTeam.addMember(oFrontendDev)
 
     # Create tasks

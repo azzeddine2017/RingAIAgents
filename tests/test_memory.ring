@@ -1,16 +1,19 @@
-Load "../src/core/memory.ring"
-Load "../src/utils/helpers.ring"
+Load "../src/libAgentAi.ring"
+
+ServerDebug = true  # stop debugging false
+aDebag = [:error, :info]
+cDbPath = "../db/test_memories.db"
 
 # Test Memory Class
 func main
     ? "=== Testing Memory Class ==="
     
     # Test initialization
-    oMemory = new Memory()//{bVerbose = true}
+    oMemory = new Memory(cDbPath)//{bVerbose = true}
     assert(oMemory != null, "Testing memory initialization...")
     
     # Test memory storage
-    assert(oMemory.store(:test_content, :short_term, 5, [:test="text"], []), "Testing basic memory storage...")
+    assert(oMemory.store([:test_content, :short_term, 5, [:test="text"], []]), "Testing basic memory storage...")
     assert(oMemory.getSize() > 0 , "Testing memory size after storage...")
     
     # Test memory retrieval

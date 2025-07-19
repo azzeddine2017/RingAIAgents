@@ -4,7 +4,7 @@
 */
 
 # Load required libraries
-Load "G:/RingAIAgents/src/libAgentAi.ring"
+Load "../src/libAgentAi.ring"
 
 # Constants
 //OLLAMA_API_URL = "http://192.168.0.160:11434/api"
