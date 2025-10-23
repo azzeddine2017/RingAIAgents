@@ -5,92 +5,92 @@
 */
 
 # تحميل المكتبات الأساسية
-load "G:\RingAIAgents\src\libAgentAi.ring"
+load "../libAgentAi.ring"
 load "httplib.ring"
 load "weblib.ring"
 
 # تحميل المتغيرات العامة
-load "G:\RingAIAgents\src\api\Global.ring"
+load "Global.ring"
 
 # تهيئة السيرفر
 oServer = new Server
 
 # تحميل الفئات
-load "G:\RingAIAgents\src\api\models\User.ring"
+load "models\User.ring"
 
 # تحميل دالة التهيئة
-load "G:\RingAIAgents\src\api\initialize.ring"
+load "initialize.ring"
 
 # تحميل مكونات التخطيط المشتركة
-load "G:\RingAIAgents\src\api\controllers\layout.ring"
+load "controllers\layout.ring"
 
 # تحميل دوال العرض
-load "G:\RingAIAgents\src\api\controllers\showDashboard.ring"
-load "G:\RingAIAgents\src\api\controllers\showAgents.ring"
-load "G:\RingAIAgents\src\api\controllers\showTeams.ring"
-load "G:\RingAIAgents\src\api\controllers\showTasks.ring"
-load "G:\RingAIAgents\src\api\controllers\showUsers.ring"
-load "G:\RingAIAgents\src\api\controllers\showChat.ring"
-load "G:\RingAIAgents\src\api\controllers\showChatHistory.ring"
-load "G:\RingAIAgents\src\api\controllers\showAPIKeys.ring"
+load "controllers\showDashboard.ring"
+load "controllers\showAgents.ring"
+load "controllers\showTeams.ring"
+load "controllers\showTasks.ring"
+load "controllers\showUsers.ring"
+load "controllers\showChat.ring"
+load "controllers\showChatHistory.ring"
+load "controllers\showAPIKeys.ring"
 
 # تحميل دوال العملاء
-load "G:\RingAIAgents\src\api\agents\loadAgents.ring"
-load "G:\RingAIAgents\src\api\agents\saveAgents.ring"
-load "G:\RingAIAgents\src\api\agents\addAgent.ring"
-load "G:\RingAIAgents\src\api\agents\getAgent.ring"
-load "G:\RingAIAgents\src\api\agents\listAgents.ring"
-load "G:\RingAIAgents\src\api\agents\checkAgents.ring"
-load "G:\RingAIAgents\src\api\agents\updateAgent.ring"
-load "G:\RingAIAgents\src\api\agents\deleteAgent.ring"
-load "G:\RingAIAgents\src\api\agents\trainAgent.ring"
-load "G:\RingAIAgents\src\api\agents\getAgentSkills.ring"
-load "G:\RingAIAgents\src\api\agents\addAgentSkill.ring"
+load "agents\loadAgents.ring"
+load "agents\saveAgents.ring"
+load "agents\addAgent.ring"
+load "agents\getAgent.ring"
+load "agents\listAgents.ring"
+load "agents\checkAgents.ring"
+load "agents\updateAgent.ring"
+load "agents\deleteAgent.ring"
+load "agents\trainAgent.ring"
+load "agents\getAgentSkills.ring"
+load "agents\addAgentSkill.ring"
 
 # تحميل دوال الفرق
-load "G:\RingAIAgents\src\api\teams\loadTeams.ring"
-load "G:\RingAIAgents\src\api\teams\saveTeams.ring"
-load "G:\RingAIAgents\src\api\teams\addTeam.ring"
-load "G:\RingAIAgents\src\api\teams\getTeam.ring"
-load "G:\RingAIAgents\src\api\teams\listTeams.ring"
-load "G:\RingAIAgents\src\api\teams\updateTeam.ring"
-load "G:\RingAIAgents\src\api\teams\deleteTeam.ring"
-load "G:\RingAIAgents\src\api\teams\addTeamMember.ring"
-load "G:\RingAIAgents\src\api\teams\removeTeamMember.ring"
-load "G:\RingAIAgents\src\api\teams\getTeamPerformance.ring"
+load "teams\loadTeams.ring"
+load "teams\saveTeams.ring"
+load "teams\addTeam.ring"
+load "teams\getTeam.ring"
+load "teams\listTeams.ring"
+load "teams\updateTeam.ring"
+load "teams\deleteTeam.ring"
+load "teams\addTeamMember.ring"
+load "teams\removeTeamMember.ring"
+load "teams\getTeamPerformance.ring"
 
 # تحميل دوال المهام
-load "G:\RingAIAgents\src\api\tasks\loadTasks.ring"
-load "G:\RingAIAgents\src\api\tasks\saveTasks.ring"
-load "G:\RingAIAgents\src\api\tasks\addTask.ring"
-load "G:\RingAIAgents\src\api\tasks\getTask.ring"
-load "G:\RingAIAgents\src\api\tasks\listTasks.ring"
-load "G:\RingAIAgents\src\api\tasks\updateTask.ring"
-load "G:\RingAIAgents\src\api\tasks\deleteTask.ring"
-load "G:\RingAIAgents\src\api\tasks\addSubtask.ring"
-load "G:\RingAIAgents\src\api\tasks\updateTaskProgress.ring"
-load "G:\RingAIAgents\src\api\tasks\getTaskHistory.ring"
+load "tasks\loadTasks.ring"
+load "tasks\saveTasks.ring"
+load "tasks\addTask.ring"
+load "tasks\getTask.ring"
+load "tasks\listTasks.ring"
+load "tasks\updateTask.ring"
+load "tasks\deleteTask.ring"
+load "tasks\addSubtask.ring"
+load "tasks\updateTaskProgress.ring"
+load "tasks\getTaskHistory.ring"
 
 # تحميل دوال المستخدمين
-load "G:\RingAIAgents\src\api\users\addUser.ring"
-load "G:\RingAIAgents\src\api\users\getUser.ring"
-load "G:\RingAIAgents\src\api\users\updateUser.ring"
-load "G:\RingAIAgents\src\api\users\login.ring"
-load "G:\RingAIAgents\src\api\users\logout.ring"
+load "users\addUser.ring"
+load "users\getUser.ring"
+load "users\updateUser.ring"
+load "users\login.ring"
+load "users\logout.ring"
 
 # تحميل دوال الذكاء الاصطناعي
-load "G:\RingAIAgents\src\api\ai\aiChat.ring"
-load "G:\RingAIAgents\src\api\ai\aiAnalyze.ring"
-load "G:\RingAIAgents\src\api\ai\aiLearn.ring"
-load "G:\RingAIAgents\src\api\ai\getAIModels.ring"
-load "G:\RingAIAgents\src\api\ai\getChatHistory.ring"
-load "G:\RingAIAgents\src\api\ai\apiKeys.ring"
+load "ai\aiChat.ring"
+load "ai\aiAnalyze.ring"
+load "ai\aiLearn.ring"
+load "ai\getAIModels.ring"
+load "ai\getChatHistory.ring"
+load "ai\apiKeys.ring"
 
 # تحميل دوال المراقبة
-load "G:\RingAIAgents\src\api\monitor\getMetrics.ring"
-load "G:\RingAIAgents\src\api\monitor\getPerformance.ring"
-load "G:\RingAIAgents\src\api\monitor\getEvents.ring"
-load "G:\RingAIAgents\src\api\monitor\configureAlerts.ring"
+load "monitor\getMetrics.ring"
+load "monitor\getPerformance.ring"
+load "monitor\getEvents.ring"
+load "monitor\configureAlerts.ring"
 
 # تهيئة النظام وتشغيل السيرفر
 initialize()

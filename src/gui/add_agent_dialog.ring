@@ -269,7 +269,7 @@ class AddAgentDialog from QDialog
 
     func validateInput {
         if oNameEdit.text() = "" {
-            QMessageBox.warning(
+            MessageBoxWarning(
                 this,
                 "Validation Error",
                 "Please enter agent name"
@@ -278,7 +278,7 @@ class AddAgentDialog from QDialog
         }
 
         if oRoleEdit.text() = "" {
-            QMessageBox.warning(
+            MessageBoxWarning(
                 this,
                 "Validation Error",
                 "Please enter agent role"
@@ -287,7 +287,7 @@ class AddAgentDialog from QDialog
         }
 
         if oDescriptionEdit.toPlainText() = "" {
-            QMessageBox.warning(
+            MessageBoxWarning(
                 this,
                 "Validation Error",
                 "Please enter agent description"
@@ -297,3 +297,13 @@ class AddAgentDialog from QDialog
 
         return true
     }
+
+    func MessageBoxWarning(oObject, cTitle, cMessage) {
+        new QMessageBox(oObject) {
+            setWindowTitle(cTitle)
+            setText(cMessage)
+            setStandardButtons(QMessageBox_Ok)
+            exec()
+        }
+    }
+               

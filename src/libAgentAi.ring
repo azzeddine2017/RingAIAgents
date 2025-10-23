@@ -38,7 +38,7 @@ Load "tools\DefaultTools.ring"
 //Load "tools\advancedtools.ring"
 
 # تهيئة النظام
-serverdebug = true
+serverdebug = false # true
 aDebag = [:error, :info]
 
 if isMainSourceFile() {

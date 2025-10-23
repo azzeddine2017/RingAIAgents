@@ -24,7 +24,7 @@ oBackendDev.addSkill("Node.js", 85)
 oBackendDev.addSkill("Databases", 80)
 
 # Create a team
-oDevTeam = oSystem.createTeam("Development Team", oBackendDev)
+oDevTeam = oSystem.createTeam("oDevTeam", "Development Team", oBackendDev)
 oDevTeam.addMember(oFrontendDev)
 
 # Create tasks
