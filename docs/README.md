@@ -117,6 +117,4 @@ We welcome your contributions! Please:
 3. Make your changes
 4. Create a pull request
 
-## License
 
-MIT License - See [LICENSE](LICENSE) file
