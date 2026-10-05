@@ -106,8 +106,8 @@ oTask {
 
 ## Documentation
 
-- [Developer Guide](DEVELOPER_GUIDE.md)
-- [Class Documentation](CLASSES.md)
+- [Developer Guide](docs/DEVELOPER_GUIDE.md)
+- [Class Documentation](docs/CLASSES.md)
 
 ## Contributing
 
